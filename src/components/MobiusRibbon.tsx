@@ -9,6 +9,7 @@ import {
 } from '@/constants/shaderConfig'
 import type { MousePosition } from '@/hooks/useMousePosition'
 import { useRibbonHover } from '@/hooks/useRibbonHover'
+import { useControls } from 'leva'
 
 interface MobiusRibbonProps {
   mousePosition: MousePosition
@@ -35,8 +36,8 @@ function MobiusRibbon({ mousePosition }: MobiusRibbonProps) {
     uniforms.uTwist.value = mousePosition.x * 2.0
 
     // Update hover uniforms with smooth transitions
-    uniforms.uHoverScale.value = hoverIntensity
-    uniforms.uFlowIntensity.value = hoverIntensity
+    uniforms.uHoverScale.value = 0.15
+    uniforms.uFlowIntensity.value = 0.05
 
     if (meshRef.current) {
       const material = meshRef.current.material as THREE.ShaderMaterial
