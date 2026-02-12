@@ -167,7 +167,6 @@ Before committing changes, ALWAYS:
 1. **Ask for Approval**: Always ask the user if the implementation is satisfactory before proceeding
 2. **If Approved**: Commit the changes to the current branch (dev) automatically
 3. **Commit Message**: Use clear, descriptive commit messages that explain the "why" behind changes
-4. **Co-Authorship**: All commits should include the Co-Authored-By tag for Claude Sonnet 4.5
 
 Example commit message format:
 ```
@@ -175,7 +174,6 @@ Add feature description
 
 Brief explanation of what was added and why.
 
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
 **Do NOT** commit changes without explicit user approval.
