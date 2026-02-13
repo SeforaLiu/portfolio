@@ -1,66 +1,28 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import type { MousePosition } from './useMousePosition'
 
-export type RibbonHoverState = {
-  isHovering: boolean
-  hoverIntensity: number
-}
-
 /**
- * Custom hook to detect when mouse is hovering over the 3D ribbon area
- * Uses smooth transitions for hover intensity
+ * Simplified hook: Just tells us IF we are hovering.
+ * We leave the animation/smoothing to the useFrame loop in the component.
  */
-export function useRibbonHover(
-  mousePosition: MousePosition
-): RibbonHoverState {
+export function useRibbonHover(mousePosition: MousePosition): boolean {
   const [isHovering, setIsHovering] = useState(false)
-  const [hoverIntensity, setHoverIntensity] = useState(0)
-  const previousIntensityRef = useRef(0)
 
   useEffect(() => {
-    // Calculate distance from center (where ribbon is)
+    // Calculate distance from center
     const distance = Math.sqrt(mousePosition.x ** 2 + mousePosition.y ** 2)
 
-    // Ribbon is roughly in the center, so check if mouse is close to center
-    const hoverThreshold = 0.7
+    // Threshold: 0.5 is roughly the visual radius of the ribbon
+    const hoverThreshold = 0.6
 
-    const shouldHover = distance < hoverThreshold
-
-    // Smooth transition for hover state
-    const targetIntensity = shouldHover ? 1.0 : 0.0
-    const lerpFactor = 0.08
-
-    const animateIntensity = () => {
-      setHoverIntensity((prev) => {
-        const next = prev + (targetIntensity - prev) * lerpFactor
-
-        // Update isHovering based on intensity threshold
-        if (next > 0.5 && !isHovering) {
-          setIsHovering(true)
-        } else if (next < 0.3 && isHovering) {
-          setIsHovering(false)
-        }
-
-        previousIntensityRef.current = next
-
-        // Stop animation loop if we've reached target
-        if (Math.abs(next - targetIntensity) < 0.001) {
-          return targetIntensity
-        }
-
-        return next
-      })
+    // Add a tiny bit of hysteresis (buffer) to prevent flickering at the edge
+    if (isHovering) {
+      if (distance > hoverThreshold + 0.05) setIsHovering(false)
+    } else {
+      if (distance < hoverThreshold) setIsHovering(true)
     }
 
-    const animationFrame = requestAnimationFrame(function loop() {
-      animateIntensity()
-      if (Math.abs(previousIntensityRef.current - targetIntensity) > 0.001) {
-        requestAnimationFrame(loop)
-      }
-    })
-
-    return () => cancelAnimationFrame(animationFrame)
   }, [mousePosition, isHovering])
 
-  return { isHovering, hoverIntensity }
+  return isHovering
 }
