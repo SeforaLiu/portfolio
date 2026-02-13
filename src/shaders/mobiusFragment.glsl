@@ -1,87 +1,79 @@
-// mobiusFragment.glsl
-// ==============================
-// VARYING VARIABLES
-// ==============================
 varying vec2 vUv;
-varying vec3 vNormal; // 接收来自 Vertex Shader 的平滑法线
+varying vec3 vNormal;
 varying vec3 vWorldPosition;
 
-// ==============================
-// UNIFORM VARIABLES
-// ==============================
 uniform float uTime;
 uniform vec2 uResolution;
 
-// ==============================
-// UTILS: HSV TO RGB
-// ==============================
-vec3 hsv2rgb(vec3 c) {
-    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
-
-// ==============================
-// UTILS: DITHERING
-// ==============================
 float random(vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
 }
 
-void main() {
-    // ==============================
-    // NORMALS (FIXED)
-    // ==============================
-    // 修复：不再使用 dFdx/dFdy (这会导致平坦着色/螺纹感)
-    // 而是使用插值后的平滑法线
-    vec3 normal = normalize(vNormal);
+vec3 getPastelDreamColor(float t) {
+    t = fract(t);
 
-    // 简单的视线方向 (假设物体在中心，或者你可以传入 cameraPosition)
+    // --- 1. 颜色定义 ---
+    vec3 c_darkOrange  = vec3(0.83, 0.17, 0.0);
+    vec3 c_orange      = vec3(0.93, 0.46, 0.15);
+    vec3 c_lightOrange = vec3(0.99, 0.59, 0.33);
+
+    vec3 c_white       = vec3(0.95, 0.95, 0.98);
+
+    vec3 c_lightPink   = vec3(0.81, 0.38, 0.63);
+    vec3 c_dustyPink   = vec3(0.70, 0.33, 0.55);
+    vec3 c_darkPink    = vec3(0.63, 0.01, 0.38);
+
+    // --- 2. 分段逻辑 ---
+    float segment = t * 7.0;
+    float index = floor(segment);
+    float f = fract(segment);
+
+    // --- 3. 过渡逻辑 ---
+    float smoothF = smoothstep(0.0, 1.0, f);
+
+    if(index == 0.0) return mix(c_darkOrange, c_orange, smoothF);
+    if(index == 1.0) return mix(c_orange, c_lightOrange, smoothF);
+    if(index == 2.0) return mix(c_lightOrange, c_white, pow(f, 3.0));
+    if(index == 3.0) return mix(c_white, c_lightPink, pow(f, 0.3));
+    if(index == 4.0) return mix(c_lightPink, c_dustyPink, smoothF);
+    if(index == 5.0) return mix(c_dustyPink, c_darkPink, smoothF);
+
+    return mix(c_darkPink, c_darkOrange, smoothF);
+}
+
+void main() {
+    vec3 normal = normalize(vNormal);
     vec3 viewDir = normalize(cameraPosition - vWorldPosition);
 
-    // ==============================
-    // FRESNEL & IRIDESCENCE
-    // ==============================
+    // 使用 abs 确保 Mobius 带的双面都能正确计算光照
     float viewDot = abs(dot(normal, viewDir));
 
-    // Fresnel
+    // 菲涅尔强度
     float fresnel = pow(1.0 - viewDot, 3.0);
     fresnel = smoothstep(0.0, 1.0, fresnel);
 
-    // Iridescence
-    // 降低频率，避免高频条纹
+    // 虹彩
     float iridAngle = viewDot * 4.0 + uTime * 0.5;
     float iridescence = sin(iridAngle) * 0.5 + 0.5;
-    iridescence = smoothstep(0.1, 0.9, iridescence);
 
-    // ==============================
-    // COLORS
-    // ==============================
-    vec3 baseColor = vec3(0.1, 0.15, 0.25);
+    // 计算颜色
+    float t = vUv.x * 1.0 + uTime * 0.08 + iridescence * 0.02;
+    vec3 baseColor = getPastelDreamColor(t);
 
-    vec3 color1 = hsv2rgb(vec3(0.6 + iridescence * 0.15, 0.7, 0.9));
-    vec3 color2 = hsv2rgb(vec3(0.85 + iridescence * 0.1, 0.6, 0.9));
+    // 合成
+    vec3 finalColor = baseColor;
 
-    float colorMix = sin(vUv.x * 6.28 + uTime * 0.5) * 0.5 + 0.5;
-    colorMix = smoothstep(0.2, 0.8, colorMix);
+    // 边缘光
+    vec3 rimColor = vec3(1.0, 0.9, 0.8);
+    finalColor += fresnel * rimColor * 0.4;
 
-    vec3 iridescent = mix(color1, color2, colorMix);
-
-    // ==============================
-    // FINAL COMPOSITION
-    // ==============================
-    vec3 finalColor = mix(baseColor, iridescent, 0.5 + iridescence * 0.3);
-
-    // Rim light
-    finalColor += fresnel * vec3(0.7, 0.8, 1.0) * 0.6;
-
-    // ==============================
-    // DITHERING
-    // ==============================
+    // 抖动 (Dithering) - 防止色带
     float noise = random(gl_FragCoord.xy);
     finalColor += (noise - 0.5) / 128.0;
 
-    float alpha = 0.6 + fresnel * 0.4;
+    // 只有完全不透明，深度缓冲(Depth Buffer)才能正确工作，
+    // 确保前面的几何体完全遮挡后面的几何体，消除重叠处的白色混合瑕疵。
+    float alpha = 1.0;
 
     gl_FragColor = vec4(finalColor, alpha);
 }

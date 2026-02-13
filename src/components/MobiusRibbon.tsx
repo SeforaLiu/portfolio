@@ -19,64 +19,61 @@ function MobiusRibbon({ mousePosition }: MobiusRibbonProps) {
   const meshRef = useRef<THREE.Mesh>(null)
   const uniformsRef = useRef(createInitialUniforms())
 
-  // 1. Get the raw boolean state (True/False)
   const isHovering = useRibbonHover(mousePosition)
 
-  // 2. Refs to store the *current* smoothed values
   const currentHoverIntensity = useRef(0)
   const currentTwist = useRef(0)
-
-  // 3. 新增：手动维护一个时间累加器，解决 Tab 切换导致的时间跳跃问题
   const timeRef = useRef(0)
 
-  // 注意：useFrame 接收第二个参数 delta (距离上一帧的时间间隔，单位秒)
+  // 轨道偏移量累加器
+  const railOffsetRef = useRef(0)
+
   useFrame((_, delta) => {
     const uniforms = uniformsRef.current
 
-    // 1. 限制最大 Delta (Time Clamping)
-    // 如果 delta 大于 0.1秒（通常意味着切换了 Tab 或发生了严重卡顿），
-    // 我们强制将其视为 0.016秒 (约60FPS的一帧)。
-    // 这样动画会从暂停处平滑继续，而不是瞬间跳跃。
+    // 1. 时间步长限制 (防止 Tab 切换后的巨大跳跃)
     const clampedDelta = Math.min(delta, 0.1)
-
-    // 2. 手动累加时间
     timeRef.current += clampedDelta
 
-    // 3. 使用帧率无关的平滑算法 (Damping)
-    // 公式：lerp(current, target, 1 - exp(-lambda * dt))
-    // 这种写法保证了无论帧率是 30fps 还是 120fps，动画速度看起来是一样的。
-
-    // A. Smooth Hover Transition
+    // 2. 平滑过渡逻辑
     const targetHover = isHovering ? 1.0 : 0.0
-    // 这里的 3.0 是速度系数 (lambda)，值越大变化越快
     const hoverSmoothing = 1.0 - Math.exp(-3.0 * clampedDelta)
-
     currentHoverIntensity.current = THREE.MathUtils.lerp(
       currentHoverIntensity.current,
       targetHover,
       hoverSmoothing
     )
 
-    // B. Smooth Twist Transition
     const targetTwist = mousePosition.x
-    // Twist 稍微快一点，系数设为 4.0
     const twistSmoothing = 1.0 - Math.exp(-6.0 * clampedDelta)
-
     currentTwist.current = THREE.MathUtils.lerp(
       currentTwist.current,
       targetTwist,
       twistSmoothing
     )
 
+    // 3. 核心修复：在 JS 中计算运动积分
+    // 基础速度 0.2，当 hover 时速度增加 (flowMultiplier 效果)
+    // 对应 Shader 原逻辑: 0.2 * (1.0 + uFlowIntensity * 2.0)
+    const speed = 0.2 * (1.0 + currentHoverIntensity.current * 2.0)
+
+    // 累加偏移量 = 速度 * 时间间隔
+    railOffsetRef.current += speed * clampedDelta
+
+    // 防止数值过大导致精度丢失，对 2PI 取模 (因为 Mobius 是闭环)
+    // 但为了保证连续性，只有当数值非常大时才需要考虑，这里简单处理即可
+    if (railOffsetRef.current > 10000.0) {
+      railOffsetRef.current -= 6283.1853; // 减去 1000 * 2PI
+    }
 
     // --- UPDATE UNIFORMS ---
-
-    // 使用我们手动累加的时间，而不是 state.clock.getElapsedTime()
     uniforms.uTime.value = timeRef.current
     uniforms.uTwist.value = currentTwist.current
-
     uniforms.uHoverScale.value = currentHoverIntensity.current * 0.2
     uniforms.uFlowIntensity.value = currentHoverIntensity.current * 0.5
+
+    // 传入计算好的偏移量
+    uniforms.uRailOffset.value = railOffsetRef.current
 
     if (meshRef.current) {
       const material = meshRef.current.material as THREE.ShaderMaterial
