@@ -22,15 +22,15 @@ function CenterTitle() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 1 }}
       >
-        Hi, I'm Shiyun LIU.
+        Hi, I'm Shiyun LIU
       </motion.div>
       <motion.div
-        className="text-xl text-white/80 font-light tracking-wide"
+        className="text-xl bg-gradient-to-r from-indigo-200 via-pink-400 to-cyan-700 bg-clip-text text-transparent tracking-wide"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7, duration: 1 }}
       >
-        A Frontend Developer who speaks human and computer language.
+        Software Developer who speaks human and computer language
       </motion.div>
     </motion.div>
   )

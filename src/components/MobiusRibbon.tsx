@@ -89,7 +89,7 @@ function MobiusRibbon({ mousePosition }: MobiusRibbonProps) {
   return (
     <mesh
       ref={meshRef}
-      scale={isMobile ? 0.7: 1}
+      scale={isMobile ? 0.7: 1.1}
       frustumCulled={false} // 关键：防止 Ribbon 移出视野时被裁剪
     >
       <planeGeometry
