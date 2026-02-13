@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 /**
  * RightTextPanel - Code snippets overlay
@@ -11,45 +10,6 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
  * - Responsive: bottom position on mobile, right side on desktop
  */
 function RightTextPanel() {
-  const isMobile = useMediaQuery('(max-width: 768px)')
-
-  const containerStyle: React.CSSProperties = isMobile
-    ? {
-        position: 'absolute',
-        left: '50%',
-        bottom: '5%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '40px',
-        maxWidth: '280px',
-        fontFamily: '"Fira Code", "Courier New", monospace',
-        zIndex: 10,
-        pointerEvents: 'none',
-      }
-    : {
-        position: 'absolute',
-        right: '5%',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '80px',
-        maxWidth: '280px',
-        fontFamily: '"Fira Code", "Courier New", monospace',
-        zIndex: 10,
-        pointerEvents: 'none',
-      }
-
-  const codeBlockStyle: React.CSSProperties = {
-    color: '#a5b4fc',
-    fontSize: isMobile ? '0.75rem' : '0.85rem',
-    padding: isMobile ? '10px 12px' : '12px 16px',
-    backgroundColor: 'rgba(165, 180, 252, 0.1)',
-    borderRadius: '8px',
-    border: '1px solid rgba(165, 180, 252, 0.2)',
-  }
-
   const codeBlocks = [
     {
       content: (
@@ -85,7 +45,7 @@ function RightTextPanel() {
 
   return (
     <motion.div
-      style={containerStyle}
+      className="absolute left-1/2 bottom-5 -translate-x-1/2 flex flex-col gap-10 max-w-[280px] font-mono z-10 pointer-events-none md:right-[5%] md:left-auto md:top-1/2 md:bottom-auto md:-translate-y-1/2 md:gap-20"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.6, duration: 1 }}
@@ -93,8 +53,8 @@ function RightTextPanel() {
       {codeBlocks.map((block, index) => (
         <motion.div
           key={index}
-          style={codeBlockStyle}
-          initial={{ opacity: 0, x: isMobile ? 0 : 50 }}
+          className="text-indigo-light text-[0.75rem] md:text-[0.85rem] px-3 py-2.5 md:px-4 md:py-3 bg-indigo-light/10 rounded-lg border border-indigo-light/20"
+          initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: block.delay, duration: 0.8 }}
         >

@@ -5,7 +5,6 @@ import LeftTextPanel from '@/components/LeftTextPanel'
 import RightTextPanel from '@/components/RightTextPanel'
 import CenterTitle from '@/components/CenterTitle'
 import { useMousePosition } from '@/hooks/useMousePosition'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 /**
  * App - Root component for the creative portfolio website
@@ -19,16 +18,15 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
  */
 function App() {
   const mousePosition = useMousePosition()
-  const isMobile = useMediaQuery('(max-width: 768px)')
-
-  // Adjust camera for mobile to show full ribbon
-  const cameraPosition = isMobile ? [0, 0, 12] : [0, 0, 8]
-  const cameraFov = isMobile ? 60 : 50
 
   return (
-    <div style={appStyles.container}>
+    <div className="relative w-screen h-screen bg-custom-bg overflow-hidden">
       {/* Canvas with 3D content */}
-      <Canvas camera={{ position: cameraPosition as [number, number, number], fov: cameraFov }} style={appStyles.canvas} gl={{ antialias: true, alpha: true }}>
+      <Canvas
+        camera={{ position: [0, 0, 8], fov: 50 }}
+        className="w-full h-full"
+        gl={{ antialias: true, alpha: true }}
+      >
         <EffectComposer>
           <Bloom luminanceThreshold={0.3} intensity={0.5} radius={0.5} />
         </EffectComposer>
@@ -42,20 +40,5 @@ function App() {
     </div>
   )
 }
-
-// Styles
-const appStyles = {
-  container: {
-    position: 'relative' as const,
-    width: '100vw',
-    height: '100vh',
-    background: '#0a0a0a',
-    overflow: 'hidden' as const,
-  },
-  canvas: {
-    width: '100%',
-    height: '100%',
-  },
-} as const
 
 export default App

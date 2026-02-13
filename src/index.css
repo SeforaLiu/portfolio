@@ -1,15 +1,21 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import "tailwindcss";
 
-  color: rgba(255, 255, 255, 0.9);
-  background-color: #0a0a0a;
+@theme {
+  /* Custom Colors */
+  --color-custom-bg: #0a0a0a;
+  --color-indigo-light: #a5b4fc;
+  --color-indigo-lighter: #818cf8;
+  --color-pink-light: #f0abfc;
+  --color-pink-lighter: #f472b6;
+  --color-cyan-light: #67e8f9;
+  --color-green-light: #34d399;
+  --color-rose-light: #fb7185;
+  --color-yellow-light: #fcd34d;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Custom Fonts */
+  --font-sans: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: "Fira Code", "Courier New", monospace;
 }
 
 * {
@@ -19,9 +25,14 @@
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
   overflow: hidden;
+  color: rgb(255 255 255 / 0.9);
+  background-color: #0a0a0a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
