@@ -7,9 +7,11 @@ uniform float uTwist;
 uniform float uHoverScale;
 uniform float uFlowIntensity;
 uniform float uRailOffset;
+uniform float uIsMobile;
 
 const float PI = 3.14159265359;
 
+// 旋转矩阵辅助函数
 mat4 rotationMatrix(vec3 axis, float angle) {
     axis = normalize(axis);
     float s = sin(angle);
@@ -21,47 +23,62 @@ mat4 rotationMatrix(vec3 axis, float angle) {
     0.0, 0.0, 0.0, 1.0);
 }
 
-void mobiusTransform(vec3 pos, vec2 uv, float t, out vec3 outPos, out vec3 outNormal) {
-    float u = uv.x * 2.0 * PI;
-    float v = pos.y;
-
-    // 直接使用 JS 计算好的累加偏移量
-    // uRailOffset 已经在 JS 里包含了速度变化的积分
-    float currentU = u + uRailOffset;
-
-    // flowMultiplier 仅用于形状变形的强度，不用于位置计算
-    float flowMultiplier = 1.0 + uFlowIntensity * 2.0;
-
-    // --- LEMNISCATE CURVE ---
+// --- 核心修复：提取曲线位置计算函数 ---
+// 这样确保 currentPos 和 nextPos 都应用了相同的 Mobile 旋转逻辑
+vec3 getLemniscatePoint(float angle) {
+    // 基础缩放
     float scale = 3.5 * (1.0 + uHoverScale * 0.2);
-    float denom = 1.0 + sin(currentU) * sin(currentU);
 
-    float x = scale * cos(currentU) / denom;
-    float y = scale * sin(currentU) * cos(currentU) / denom;
+    float denom = 1.0 + sin(angle) * sin(angle);
+    float x = scale * cos(angle) / denom;
+    float y = scale * sin(angle) * cos(angle) / denom;
     float z = 0.0;
 
-    vec3 centerPos = vec3(x, y, z);
+    // Mobile 旋转逻辑 (在这里统一处理)
+    // 旋转 90 度变成 "8" 字形
+    if (uIsMobile > 0.5) {
+        float temp = x;
+        x = y;
+        y = -temp;
+    }
 
-    // --- TANGENT & FRAME ---
+    return vec3(x, y, z);
+}
+
+void mobiusTransform(vec3 pos, vec2 uv, float t, out vec3 outPos, out vec3 outNormal) {
+    float u = uv.x * 2.0 * PI;
+    float v = pos.y; // Ribbon 的宽度方向 (-0.5 到 0.5)
+
+    // 沿轨道的当前角度 (包含 JS 传入的积分偏移)
+    float currentU = u + uRailOffset;
+    float flowMultiplier = 1.0 + uFlowIntensity * 2.0;
+
+    // 1. 计算中心路径点 (应用了 Mobile 旋转)
+    vec3 centerPos = getLemniscatePoint(currentU);
+
+    // 2. 计算下一个点用于切线 (同样应用 Mobile 旋转)
     float delta = 0.01;
-    float nextU = currentU + delta;
-    float nextDenom = 1.0 + sin(nextU) * sin(nextU);
-    float nextX = scale * cos(nextU) / nextDenom;
-    float nextY = scale * sin(nextU) * cos(nextU) / nextDenom;
+    vec3 nextPos = getLemniscatePoint(currentU + delta);
 
-    vec3 tangent = normalize(vec3(nextX - x, nextY - y, 0.0));
+    // 3. 计算正确的切线
+    vec3 tangent = normalize(nextPos - centerPos);
     vec3 binormal = vec3(0.0, 0.0, 1.0);
     vec3 normalRef = cross(tangent, binormal);
 
-    // 这里依然可以使用 uTime，因为它是正弦波的相位，不会造成无限累积的位移
-    float twistAngle = (u * 0.5) + (t * sin(u + uTime));
+    // 4. 计算扭曲 (Twist)
+    // 确保首尾相接平滑: u=0 和 u=2PI 时，sin(u) 为 0，twistAngle 差值为 2PI (视觉上旋转一圈等于没转)
+    float twistAngle = u + (t * sin(u + uTime));
     twistAngle += sin(u * 3.0 + uTime) * 0.2 * flowMultiplier;
 
+    // 5. 应用扭曲旋转
     mat4 rotMat = rotationMatrix(tangent, twistAngle);
     vec3 twistedNormal = (rotMat * vec4(normalRef, 0.0)).xyz;
 
-    // --- FINAL POSITION ---
+    // 6. 计算最终位置
+    // 垂直分离 (Vertical Separation) 增加立体感
     float verticalSeparation = sin(currentU) * 0.8;
+
+    // Z轴摆动 (Wobble) - 使用原始 u 保证首尾闭合
     float zWobble = sin(u * 2.0 + uTime) * 0.2;
 
     outPos = centerPos + (twistedNormal * v) + vec3(0.0, 0.0, verticalSeparation + zWobble);

@@ -15,6 +15,7 @@ export const createInitialUniforms = () => ({
   uHoverScale: { value: 0 },
   uFlowIntensity: { value: 0 },
   uRailOffset: { value: 0 },
+  uIsMobile: { value: 0 },
 })
 
 export const SHADER_MATERIAL_CONFIG = {
