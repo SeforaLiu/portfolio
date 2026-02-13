@@ -9,7 +9,7 @@ import {
 } from '@/constants/shaderConfig'
 import type { MousePosition } from '@/hooks/useMousePosition'
 import { useRibbonHover } from '@/hooks/useRibbonHover'
-import { useControls } from 'leva'
+// import { useControls } from 'leva'
 
 interface MobiusRibbonProps {
   mousePosition: MousePosition

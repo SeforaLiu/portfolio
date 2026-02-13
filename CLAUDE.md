@@ -159,21 +159,3 @@ Before committing changes, ALWAYS:
 3. Test on mobile browser (or simulate mobile viewport)
 4. Verify animations and 3D rendering work correctly
 5. Check console for errors or warnings
-
-### Post-Implementation Workflow
-
-**IMPORTANT**: After completing any user requirements:
-
-1. **Ask for Approval**: Always ask the user if the implementation is satisfactory before proceeding
-2. **If Approved**: Commit the changes to the current branch (dev) automatically
-3. **Commit Message**: Use clear, descriptive commit messages that explain the "why" behind changes
-
-Example commit message format:
-```
-Add feature description
-
-Brief explanation of what was added and why.
-
-```
-
-**Do NOT** commit changes without explicit user approval.
