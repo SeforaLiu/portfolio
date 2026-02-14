@@ -1,38 +1,52 @@
 import { motion } from 'framer-motion'
 
-/**
- * CenterTitle - Main title and subtitle in the center
- *
- * Features:
- * - Gradient text effect on the main title
- * - Fade-in animation with vertical offset
- * - Centered positioning with responsive spacing
- */
 function CenterTitle() {
+  // We define the gradient as a mask.
+  // This is often more stable on iOS Safari than background-clip.
+  const textStyle = {
+    background: 'linear-gradient(to right, #818cf8, #f472b6, #22d3ee)', // Use hex/rgb instead of tailwind vars to be safe
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    // The "Magic" property for iOS:
+    WebkitMaskImage: 'linear-gradient(to right, #818cf8, #f472b6, #22d3ee)',
+  }
+
+  const subTextStyle = {
+    background: 'linear-gradient(to right, #ffffff, #ffffff, #ffffff )',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    WebkitMaskImage: 'linear-gradient(to right,#ffffff, #ffffff, #ffffff)',
+  }
+
   return (
-    <motion.div
-      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10 pointer-events-none max-w-[600px] p-5"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.3, duration: 1 }}
-    >
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-50 pointer-events-none w-full max-w-[600px] p-5">
       <motion.div
-        className="text-[3.5rem] font-bold mb-4 leading-tight bg-gradient-to-r from-indigo-light via-pink-light to-cyan-light bg-clip-text text-transparent"
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 1 }}
+        transition={{ duration: 0.8 }}
+        className="mb-4"
       >
-        Hi, I'm Shiyun
+        <h1
+          style={textStyle}
+          className="text-[3.5rem] font-bold leading-tight"
+        >
+          Hi, I'm Shiyun
+        </h1>
       </motion.div>
+
       <motion.div
-        className="text-xl bg-gradient-to-r from-indigo-200 via-pink-400 to-cyan-700 bg-clip-text text-transparent tracking-wide"
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 1 }}
+        transition={{ delay: 0.4, duration: 0.8 }}
       >
-        Software Developer who speaks human and computer language
+        <p
+          style={subTextStyle}
+          className="text-xl font-medium tracking-wide "
+        >
+          Software Developer who speaks human and computer language
+        </p>
       </motion.div>
-    </motion.div>
+    </div>
   )
 }
 
