@@ -12,10 +12,10 @@ function CenterTitle() {
   }
 
   const subTextStyle = {
-    background: 'linear-gradient(to right, #ffffff, #ffffff, #ffffff )',
+    background: 'linear-gradient(to right, #ffffff, #70aed9, #70aed9 )',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    WebkitMaskImage: 'linear-gradient(to right,#ffffff, #ffffff, #ffffff)',
+    WebkitMaskImage: 'linear-gradient(to right,#ffffff, #70aed9, #70aed9)',
   }
 
   return (

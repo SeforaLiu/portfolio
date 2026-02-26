@@ -26,13 +26,21 @@
 
 body {
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   color: rgb(255 255 255 / 0.9);
   background-color: #0a0a0a;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  /* CSS Scroll Snap - force magnetic effect between screens */
+  scroll-snap-type: y mandatory;
 }
 
 #root {
