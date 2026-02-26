@@ -1,21 +1,19 @@
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/i18n'
 
 /**
- * LeftTextPanel - Italian poetic text overlay
+ * LeftTextPanel - Poetic text overlay with i18n support
  *
  * Features:
  * - Elegant italic typography with Georgia font
  * - Staggered fade-in animations
  * - Semi-transparent text for visual depth
  * - Responsive: top position on mobile, left side on desktop
+ * - Multilingual support (EN/IT/CN)
  */
 function LeftTextPanel() {
-  const textItems = [
-    { text: '"Le parole son vento..."', opacity: 0.6, fontSize: 'text-lg md:text-[1.1rem]', delay: 0.5 },
-    { text: '"Parole, parole..."', opacity: 0.5, fontSize: 'text-base md:text-[1rem]', delay: 0.8 },
-    { text: '"Nel mezzo del cammin..."', opacity: 0.4, fontSize: 'text-sm md:text-[0.95rem]', delay: 1.1 },
-    { text: '"Lingua, voce, silenzio"', opacity: 0.5, fontSize: 'text-base md:text-[1rem]', delay: 1.4 },
-  ] as const
+  const { t } = useLanguage()
+  const textItems = t.leftTextItems
 
   return (
     <motion.div

@@ -1,13 +1,16 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import useIsMobile from '@/hooks/useIsMobile'
+import { useLanguage } from '@/i18n'
 
 /**
  * SecondScreen component - Displays the intersection of humanities and technical paths
  * Features a three-column layout with smooth animations triggered by scroll
+ * Multilingual support (EN/IT/CN)
  */
 export default function SecondScreen() {
   const isMobile = useIsMobile()
   const { scrollYProgress } = useScroll()
+  const { t } = useLanguage()
 
   // Animation values based on scroll - synchronized with Mobius movement (starts at 0.66)
   const opacity = useTransform(scrollYProgress, [0.6, 0.75], [0, 1])
@@ -49,17 +52,17 @@ export default function SecondScreen() {
                 <path d="M10 20 L10 24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 <path d="M22 20 L22 24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
-              <h3 className="text-xl md:text-2xl font-serif text-indigo-300">Humanities Path</h3>
+              <h3 className="text-xl md:text-2xl font-serif text-indigo-300">{t.humanities.title}</h3>
             </div>
 
             {/* Italian background placeholder */}
             <div className="space-y-4 text-indigo-200/80 font-serif leading-relaxed">
               <p className="text-sm md:text-base italic opacity-80">
-                &quot;Nel mezzo del cammin di nostra vita...&quot;
+                {t.humanities.quote}
               </p>
               <div className="h-px w-full bg-gradient-to-r from-indigo-500/50 to-transparent my-4"></div>
               <p className="text-sm md:text-base">
-                Humanities Path placehoder 123
+                {t.humanities.description}
               </p>
             </div>
 
@@ -101,10 +104,10 @@ export default function SecondScreen() {
               </svg>
             </div>
 
-            <h3 className="text-lg md:text-xl font-bold text-cyan-300 mb-4">The Intersection</h3>
+            <h3 className="text-lg md:text-xl font-bold text-cyan-300 mb-4">{t.intersection.title}</h3>
 
             <p className="text-base md:text-lg text-white/90 font-medium leading-relaxed">
-              &quot;From translating Dante's verses to architecting digital experiences.&quot;
+              {t.intersection.quote}
             </p>
 
             {/* Decorative elements */}
@@ -145,28 +148,28 @@ export default function SecondScreen() {
                 <span className="text-pink-400">const</span> <span className="text-cyan-300">journey</span> = {'{'}
               </div>
               <div className="pl-4 text-pink-200/80">
-                <span className="text-pink-400">years</span>: <span className="text-yellow-300">3+</span>,
+                <span className="text-pink-400">years</span>: <span className="text-yellow-300">{t.technical.years}</span>,
               </div>
               <div className="pl-4 text-pink-200/80">
-                <span className="text-pink-400">focus</span>: <span className="text-green-300">'frontend'</span>,
+                <span className="text-pink-400">focus</span>: <span className="text-green-300">'{t.technical.focus}'</span>,
               </div>
               <div className="pl-4 text-pink-200/80">
-                <span className="text-pink-400">stack</span>: ['React', 'TypeScript', <span className="text-green-300">...</span>],
+                <span className="text-pink-400">stack</span>: [{t.technical.stack}],
               </div>
               <div className="text-pink-200/80">
                 {'}'};
               </div>
               <div className="h-px w-full bg-pink-500/30 my-3"></div>
               <p className="text-pink-200/80">
-                Technical Path placehoder 123
+                {t.technical.description}
               </p>
             </div>
 
             {/* Progress bar indicator */}
             <div className="mt-6">
               <div className="flex justify-between text-xs text-pink-300/60 mb-2">
-                <span>Progress</span>
-                <span>Ongoing</span>
+                <span>{t.technical.progress}</span>
+                <span>{t.technical.ongoing}</span>
               </div>
               <div className="h-1 bg-pink-900/50 rounded-full overflow-hidden">
                 <motion.div

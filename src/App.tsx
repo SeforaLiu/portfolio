@@ -6,9 +6,11 @@ import LeftTextPanel from '@/components/LeftTextPanel'
 import RightTextPanel from '@/components/RightTextPanel'
 import CenterTitle from '@/components/CenterTitle'
 import SecondScreen from '@/components/SecondScreen'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { useMousePosition } from '@/hooks/useMousePosition'
 import useScrollPosition from '@/hooks/useScrollPosition'
 import useIsMobile from "@/hooks/useIsMobile.ts";
+import { LanguageProvider } from '@/i18n'
 
 function App() {
   const mousePosition = useMousePosition()
@@ -16,9 +18,13 @@ function App() {
   const isMobile = useIsMobile()
 
   return (
-    <div className="relative w-full min-h-screen bg-custom-bg">
-      {/* Fixed 3D Canvas - persists across scroll */}
-      <div className="fixed inset-0 z-0">
+    <LanguageProvider>
+      <div className="relative w-full min-h-screen bg-custom-bg">
+        {/* Language Switcher */}
+        <LanguageSwitcher />
+
+        {/* Fixed 3D Canvas - persists across scroll */}
+        <div className="fixed inset-0 z-0">
         <Canvas
           camera={{ position: [0, 0, 8], fov: 50 }}
           className="w-full h-full"
@@ -56,7 +62,8 @@ function App() {
       <div className="relative z-10 min-h-screen snap-start">
         <SecondScreen />
       </div>
-    </div>
+      </div>
+    </LanguageProvider>
   )
 }
 

@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/i18n'
 
 function CenterTitle() {
+  const { t } = useLanguage()
+
   // We define the gradient as a mask.
   // This is often more stable on iOS Safari than background-clip.
   const textStyle = {
@@ -30,7 +33,7 @@ function CenterTitle() {
           style={textStyle}
           className="text-[3.5rem] font-bold leading-tight"
         >
-          Hi, I'm Shiyun
+          {t.title}
         </h1>
       </motion.div>
 
@@ -43,7 +46,7 @@ function CenterTitle() {
           style={subTextStyle}
           className="text-xl font-medium tracking-wide "
         >
-          Software Developer who speaks human and computer language
+          {t.subtitle}
         </p>
       </motion.div>
     </div>
