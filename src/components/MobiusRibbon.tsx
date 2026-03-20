@@ -88,9 +88,9 @@ function MobiusRibbon({ mousePosition, scrollPosition }: MobiusRibbonProps) {
     const initialY = 0
 
     // 滚动后的目标位置和大小（左上角）
-    const targetScale = isMobile ? 0.1 : 0.1
-    const targetX = isMobile ? -2.5 : -4
-    const targetY = isMobile ? 1.8 : 3
+    const targetScale = isMobile ? 0.08 : 0.1
+    const targetX = isMobile ? -1.3 : -4
+    const targetY = isMobile ? 3.2 : 3
 
     // 平滑过渡到目标位置（基于滚动进度）
     // 计算从0.66到1的相对进度
