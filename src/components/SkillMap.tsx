@@ -17,7 +17,7 @@ const GLOW_COLOR = '#00ffff'
 // Aspect ratio for the infinity shape
 // On PC, this controls the "flatness" of the horizontal ∞
 // Higher value = flatter shape
-const PC_HEIGHT_RATIO = 0.5 // Y scale is 50% of container height
+const PC_HEIGHT_RATIO = 0.35 // Y scale is 50% of container height
 
 interface Dot {
   x: number
@@ -63,6 +63,7 @@ function getInfinityPoint(
  */
 export default function SkillMap() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const isMobile = useIsMobile()
   const animationRef = useRef<number>()
   const startTimeRef = useRef<number>(0)
@@ -70,6 +71,8 @@ export default function SkillMap() {
   const lastPositionRef = useRef<number>(0)
   // Store logical dimensions (without DPR) for consistent snake path calculation
   const dimensionsRef = useRef<{ width: number; height: number }>({ width: 0, height: 0 })
+  // Track visibility state
+  const wasVisibleRef = useRef(false)
 
   // Initialize dots array
   const initDots = useCallback(
@@ -101,6 +104,17 @@ export default function SkillMap() {
     },
     [isMobile]
   )
+
+  // Reset snake and dots state - called when component becomes visible
+  const resetState = useCallback(() => {
+    // Reset all dots to active (not eaten)
+    dotsRef.current.forEach((dot) => {
+      dot.eaten = false
+    })
+    // Reset snake position to start from center
+    startTimeRef.current = 0
+    lastPositionRef.current = 0
+  }, [])
 
   // Draw a single dot
   const drawDot = useCallback(
@@ -287,8 +301,39 @@ export default function SkillMap() {
     }
   }, [animate, initDots])
 
+  // IntersectionObserver to detect visibility changes
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const isNowVisible = entry.isIntersecting
+
+          // When component becomes visible (entering the viewport)
+          if (isNowVisible && !wasVisibleRef.current) {
+            resetState()
+          }
+
+          // Update the ref to track previous visibility state
+          wasVisibleRef.current = isNowVisible
+        })
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of the component is visible
+      }
+    )
+
+    observer.observe(container)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [resetState])
+
   return (
-    <div className="w-full h-full relative">
+    <div ref={containerRef} className="w-full h-full relative">
       <canvas
         ref={canvasRef}
         className="w-full h-full"
