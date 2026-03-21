@@ -11,13 +11,14 @@ const PC_HEIGHT_RATIO = 0.35
 
 // Placeholder content for each skill card
 const CARD_CONTENTS = [
-  'Humanities',
-  'React & TypeScript',
-  'Backend Services',
-  'DevOps & Cloud',
-  'UI/UX Design',
-  'System Architecture',
-  'Performance Optimization',
+  'Digital Humanities',
+  'Frontend Engineering',
+  'Interactive Graphics',
+  'Backend Systems',
+  'AI Integration',
+  'Data Layer',
+  'Tooling',
+  'System Architecture'
 ]
 
 /**
@@ -53,7 +54,7 @@ function getCardPositions(width: number, height: number) {
     },
     // 2. 右边的上顶点上方 (above upper right loop)
     {
-      x: centerX + a * sin45,
+      x: centerX + a * sin45 -30,
       y: centerY - b / 2 - offset + 10,
     },
     // 3. 最右顶点的右边 (right of rightmost point)

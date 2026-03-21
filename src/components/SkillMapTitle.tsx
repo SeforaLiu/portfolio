@@ -6,38 +6,69 @@ interface SkillMapTitleProps {
 
 /**
  * SkillMapTitle - Title displayed above the infinity shape
- * Features entrance animation when the component becomes visible
+ * Features a "Breathing Neon" effect to match the cyberpunk theme of SkillMap
+ *
+ * Design Choice:
+ * - Multi-layered text-shadow creates a realistic neon glow diffusion.
+ * - Pulsing animation simulates the instability of gas in a neon tube.
  */
 export default function SkillMapTitle({ containerHeight }: SkillMapTitleProps) {
-  // Position title above the center of the infinity shape
-  // The upper loop top is at centerY - b/2, so place title above that
+  // Position calculation (unchanged logic, kept for consistency)
   const b = containerHeight * 0.35 // PC_HEIGHT_RATIO
-  const titleY = (containerHeight / 2) - (b / 2) - 60 // Above the upper part of the 8
+  const titleY = (containerHeight / 2) - (b / 2) - 140 // Increased offset slightly for better spacing
+
+  // Neon Color Palette
+  const neonColor = '#00ffff' // Cyan
+  const glowColor = 'rgba(0, 255, 255, 0.8)'
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: -20, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{
-        duration: 0.8,
-        delay: 0.2,
+        duration: 1,
+        delay: 0.5,
         ease: 'easeOut',
       }}
-      className="absolute left-1/2 pointer-events-none whitespace-nowrap"
+      className="absolute left-1/2 pointer-events-none whitespace-nowrap z-10"
       style={{
         top: titleY,
         x: '-50%',
       }}
     >
-      <h2
-        className="text-2xl md:text-3xl font-light tracking-widest"
+      <motion.h2
+        className="text-3xl md:text-4xl font-extralight tracking-[0.3em] uppercase"
         style={{
-          color: 'rgba(0, 255, 255, 0.85)',
-          textShadow: '0 0 20px rgba(0, 255, 255, 0.4)',
+          color: '#fff',
+          // Initial static glow (base layer)
+          textShadow: `
+            0 0 5px #fff,
+            0 0 10px #fff,
+            0 0 20px ${neonColor},
+            0 0 40px ${neonColor},
+            0 0 80px ${neonColor}
+          `,
+        }}
+        // Breathing Animation for the Neon Glow
+        animate={{
+          textShadow: [
+            // State 1: Bright
+            `0 0 5px #fff, 0 0 10px #fff, 0 0 20px ${neonColor}, 0 0 40px ${neonColor}, 0 0 80px ${neonColor}`,
+            // State 2: Dimmer (simulating voltage drop)
+            `0 0 2px #fff, 0 0 5px #fff, 0 0 10px ${neonColor}, 0 0 20px ${neonColor}, 0 0 40px ${glowColor}`,
+            // State 3: Back to Bright
+            `0 0 5px #fff, 0 0 10px #fff, 0 0 20px ${neonColor}, 0 0 40px ${neonColor}, 0 0 80px ${neonColor}`,
+          ],
+        }}
+        transition={{
+          duration: 4, // Slow breathing cycle
+          times: [0, 0.5, 1],
+          repeat: Infinity,
+          ease: "easeInOut",
         }}
       >
-       skill map title placeholder
-      </h2>
+        Technical Landscape
+      </motion.h2>
     </motion.div>
   )
 }
