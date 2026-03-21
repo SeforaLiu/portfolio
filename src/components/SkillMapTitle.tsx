@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useLanguage } from '../i18n/LanguageContext'
 
 interface SkillMapTitleProps {
   containerHeight: number
@@ -13,6 +14,8 @@ interface SkillMapTitleProps {
  * - Pulsing animation simulates the instability of gas in a neon tube.
  */
 export default function SkillMapTitle({ containerHeight }: SkillMapTitleProps) {
+  const { t } = useLanguage()
+
   // Position calculation (unchanged logic, kept for consistency)
   const b = containerHeight * 0.35 // PC_HEIGHT_RATIO
   const titleY = (containerHeight / 2) - (b / 2) - 140 // Increased offset slightly for better spacing
@@ -67,7 +70,7 @@ export default function SkillMapTitle({ containerHeight }: SkillMapTitleProps) {
           ease: "easeInOut",
         }}
       >
-        Technical Landscape
+        {t.skillMapTitle}
       </motion.h2>
     </motion.div>
   )

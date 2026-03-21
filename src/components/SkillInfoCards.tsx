@@ -1,4 +1,5 @@
 import SkillInfoCard from './SkillInfoCard'
+import { useLanguage } from '../i18n/LanguageContext'
 
 interface SkillInfoCardsProps {
   containerWidth: number
@@ -8,18 +9,6 @@ interface SkillInfoCardsProps {
 // Same constants as SkillMap for consistent positioning
 const PADDING = 60
 const PC_HEIGHT_RATIO = 0.35
-
-// Placeholder content for each skill card
-const CARD_CONTENTS = [
-  'Digital Humanities',
-  'Frontend Engineering',
-  'Interactive Graphics',
-  'Backend Systems',
-  'AI Integration',
-  'Data Layer',
-  'Tooling',
-  'System Architecture'
-]
 
 /**
  * Calculate card positions around the infinity shape
@@ -93,6 +82,7 @@ export default function SkillInfoCards({
   containerWidth,
   containerHeight,
 }: SkillInfoCardsProps) {
+  const { t } = useLanguage()
   const positions = getCardPositions(containerWidth, containerHeight)
 
   return (
@@ -103,7 +93,7 @@ export default function SkillInfoCards({
           position={position}
           delay={0.1 + index * 0.08}
         >
-          {CARD_CONTENTS[index]}
+          {t.skillCards[index]}
         </SkillInfoCard>
       ))}
     </div>

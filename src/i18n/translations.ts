@@ -29,6 +29,10 @@ export interface Translation {
     fontSize: string
     delay: number
   }>
+
+  // SkillMap
+  skillMapTitle: string
+  skillCards: string[]
 }
 
 export const translations: Record<Language, Translation> = {
@@ -44,6 +48,19 @@ export const translations: Record<Language, Translation> = {
       { text: '"In the middle of the journey..."', opacity: 0.4, fontSize: 'text-sm md:text-[0.95rem]', delay: 1.1 },
       { text: '"Language, voice, silence"', opacity: 0.5, fontSize: 'text-base md:text-[1rem]', delay: 1.4 },
     ],
+
+    // SkillMap
+    skillMapTitle: 'Technical Landscape',
+    skillCards: [
+      'Digital Humanities',
+      'Frontend Engineering',
+      'Interactive Graphics',
+      'Backend Systems',
+      'AI Integration',
+      'Data Layer',
+      'Tooling',
+      'System Architecture',
+    ],
   },
 
   it: {
@@ -58,6 +75,19 @@ export const translations: Record<Language, Translation> = {
       { text: '"Nel mezzo del cammin..."', opacity: 0.4, fontSize: 'text-sm md:text-[0.95rem]', delay: 1.1 },
       { text: '"Lingua, voce, silenzio"', opacity: 0.5, fontSize: 'text-base md:text-[1rem]', delay: 1.4 },
     ],
+
+    // SkillMap
+    skillMapTitle: 'Paesaggio Tecnologico',
+    skillCards: [
+      'Scienze Umane Digitali',
+      'Ingegneria Frontend',
+      'Grafica Interattiva',
+      'Sistemi Backend',
+      'Integrazione AI',
+      'Livello Dati',
+      'Strumenti',
+      'Architettura di Sistema',
+    ],
   },
 
   cn: {
@@ -71,6 +101,19 @@ export const translations: Record<Language, Translation> = {
       { text: '"话语，话语..."', opacity: 0.5, fontSize: 'text-base md:text-[1rem]', delay: 0.8 },
       { text: '"人生旅程的中途..."', opacity: 0.4, fontSize: 'text-sm md:text-[0.95rem]', delay: 1.1 },
       { text: '"语言、声音、静默"', opacity: 0.5, fontSize: 'text-base md:text-[1rem]', delay: 1.4 },
+    ],
+
+    // SkillMap
+    skillMapTitle: '技术图谱',
+    skillCards: [
+      '数字人文',
+      '前端工程',
+      '交互图形',
+      '后端系统',
+      'AI集成',
+      '数据层',
+      '工具链',
+      '系统架构',
     ],
   },
 }
