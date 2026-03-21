@@ -1,5 +1,7 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import useIsMobile from '../hooks/useIsMobile'
+import SkillInfoCards from './SkillInfoCards'
+import SkillMapTitle from './SkillMapTitle'
 
 // Configuration constants
 const DOT_COUNT = 60
@@ -73,6 +75,8 @@ export default function SkillMap() {
   const dimensionsRef = useRef<{ width: number; height: number }>({ width: 0, height: 0 })
   // Track visibility state
   const wasVisibleRef = useRef(false)
+  // Track container dimensions for info cards
+  const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 })
 
   // Initialize dots array
   const initDots = useCallback(
@@ -282,6 +286,9 @@ export default function SkillMap() {
       // Reinitialize dots with new dimensions
       dotsRef.current = initDots(rect.width, rect.height)
 
+      // Update container dimensions for info cards
+      setContainerDimensions({ width: rect.width, height: rect.height })
+
       // Reset animation state
       startTimeRef.current = 0
       lastPositionRef.current = 0
@@ -339,6 +346,17 @@ export default function SkillMap() {
         className="w-full h-full"
         style={{ display: 'block' }}
       />
+      {/* Title above the infinity shape - only on PC */}
+      {!isMobile && containerDimensions.height > 0 && (
+        <SkillMapTitle containerHeight={containerDimensions.height} />
+      )}
+      {/* Info cards - only on PC */}
+      {!isMobile && containerDimensions.width > 0 && containerDimensions.height > 0 && (
+        <SkillInfoCards
+          containerWidth={containerDimensions.width}
+          containerHeight={containerDimensions.height}
+        />
+      )}
     </div>
   )
 }
