@@ -33,6 +33,16 @@ export interface Translation {
   // SkillMap
   skillMapTitle: string
   skillCards: string[]
+
+  // ThirdScreen - Projects
+  projectsTitle: string
+  projectsSubtitle: string
+  viewProjectButton: string
+  projectCards: Array<{
+    title: string
+    description: string
+    url: string
+  }>
 }
 
 export const translations: Record<Language, Translation> = {
@@ -61,6 +71,18 @@ export const translations: Record<Language, Translation> = {
       'Tooling',
       'System Architecture',
     ],
+
+    // ThirdScreen - Projects
+    projectsTitle: 'Projects',
+    projectsSubtitle: 'My Personal Works',
+    viewProjectButton: 'View Project',
+    projectCards: [
+      {
+        title: '3D Travel Earth',
+        description: 'A 3D interactive globe showcasing travel memories and destinations',
+        url: 'https://travel.shiyun-liu.com/',
+      },
+    ],
   },
 
   it: {
@@ -88,6 +110,18 @@ export const translations: Record<Language, Translation> = {
       'Strumenti',
       'Architettura di Sistema',
     ],
+
+    // ThirdScreen - Projects
+    projectsTitle: 'Progetti',
+    projectsSubtitle: 'I Miei Lavori Personali',
+    viewProjectButton: 'Vedi Progetto',
+    projectCards: [
+      {
+        title: '3D Travel Earth',
+        description: 'Un globo 3D interattivo che mostra ricordi di viaggio e destinazioni',
+        url: 'https://travel.shiyun-liu.com/',
+      },
+    ],
   },
 
   cn: {
@@ -114,6 +148,18 @@ export const translations: Record<Language, Translation> = {
       '数据层',
       '工具链',
       '系统架构',
+    ],
+
+    // ThirdScreen - Projects
+    projectsTitle: '项目展示',
+    projectsSubtitle: '个人作品',
+    viewProjectButton: '查看项目',
+    projectCards: [
+      {
+        title: '3D旅行地球',
+        description: '3D交互式地球，展示旅行记忆和目的地',
+        url: 'https://travel.shiyun-liu.com/',
+      },
     ],
   },
 }

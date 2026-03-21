@@ -39,11 +39,10 @@ body {
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-  /* CSS Scroll Snap - force magnetic effect between screens */
-  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
 }
 
 #root {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }
