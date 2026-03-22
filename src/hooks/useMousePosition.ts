@@ -6,50 +6,32 @@ export type MousePosition = {
 }
 
 /**
- * Custom hook to track mouse/touch position normalized to [-1, 1] range
- * Supports both mouse (desktop) and touch (mobile) events
+ * Custom hook to track mouse position normalized to [-1, 1] range
+ * Only tracks mouse on desktop - mobile devices don't have hover effects
+ * This allows normal scroll behavior on mobile devices
  */
 export function useMousePosition(): MousePosition {
   const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 })
 
   useEffect(() => {
+    // Check if device supports hover (desktop)
+    const hasHover = window.matchMedia('(hover: hover)').matches
+
+    // Only track mouse position on desktop devices
+    if (!hasHover) {
+      return
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 2 - 1
       const y = -(e.clientY / window.innerHeight) * 2 + 1
       setMousePosition({ x, y })
     }
 
-    const handleTouchMove = (e: TouchEvent) => {
-      // Prevent default scrolling when touching the Möbius ribbon area
-      e.preventDefault()
-      const touch = e.touches[0]
-      if (touch) {
-        const x = (touch.clientX / window.innerWidth) * 2 - 1
-        const y = -(touch.clientY / window.innerHeight) * 2 + 1
-        setMousePosition({ x, y })
-      }
-    }
-
-    const handleTouchStart = (e: TouchEvent) => {
-      const touch = e.touches[0]
-      if (touch) {
-        const x = (touch.clientX / window.innerWidth) * 2 - 1
-        const y = -(touch.clientY / window.innerHeight) * 2 + 1
-        setMousePosition({ x, y })
-      }
-    }
-
-    // Mouse events
     window.addEventListener('mousemove', handleMouseMove)
-
-    // Touch events
-    window.addEventListener('touchmove', handleTouchMove, { passive: false })
-    window.addEventListener('touchstart', handleTouchStart, { passive: true })
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('touchmove', handleTouchMove)
-      window.removeEventListener('touchstart', handleTouchStart)
     }
   }, [])
 
