@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { ReactNode } from 'react'
 import EarthIllustration from './EarthIllustration'
 
 interface ProjectCardProps {
@@ -7,11 +8,13 @@ interface ProjectCardProps {
   projectUrl: string
   buttonText: string
   githubUrl?: string
+  illustration?: ReactNode
+  glowColor?: string
 }
 
 /**
  * ProjectCard - A glassmorphism card for displaying project information
- * Features animated earth illustration and external link button
+ * Features customizable illustration and external link buttons
  */
 export default function ProjectCard({
   title,
@@ -19,6 +22,8 @@ export default function ProjectCard({
   projectUrl,
   buttonText,
   githubUrl,
+  illustration,
+  glowColor = 'rgba(34, 211, 238, 0.1)',
 }: ProjectCardProps) {
   return (
     <motion.div
@@ -32,16 +37,16 @@ export default function ProjectCard({
         borderColor: 'rgba(255, 255, 255, 0.1)',
         boxShadow: `
           0 8px 32px rgba(0, 0, 0, 0.3),
-          0 0 60px rgba(34, 211, 238, 0.1),
+          0 0 60px ${glowColor},
           inset 0 1px 0 rgba(255, 255, 255, 0.1)
         `,
       }}
     >
       {/* Card content */}
       <div className="p-6 md:p-8 flex flex-col items-center gap-6">
-        {/* Earth illustration */}
+        {/* Illustration */}
         <div className="relative">
-          <EarthIllustration />
+          {illustration || <EarthIllustration />}
         </div>
 
         {/* Project info */}
@@ -119,7 +124,7 @@ export default function ProjectCard({
         initial={{ opacity: 0 }}
         whileHover={{ opacity: 1 }}
         style={{
-          background: 'radial-gradient(circle at center, rgba(34, 211, 238, 0.1) 0%, transparent 70%)',
+          background: `radial-gradient(circle at center, ${glowColor} 0%, transparent 70%)`,
         }}
       />
     </motion.div>

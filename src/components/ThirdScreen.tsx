@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useLanguage } from '@/i18n'
 import ProjectCard from './ProjectCard'
+import MarbleIllustration from './MarbleIllustration'
 
 interface ThirdScreenProps {
   isActive?: boolean
@@ -26,7 +27,7 @@ export default function ThirdScreen({ isActive = false }: ThirdScreenProps) {
   }, [isActive, hasAnimated])
 
   // Get project data from translations
-  const project = t.projectCards[0]
+  const projects = t.projectCards
 
   return (
     <section
@@ -77,15 +78,31 @@ export default function ThirdScreen({ isActive = false }: ThirdScreenProps) {
           </p>
         </div>
 
-        {/* Project card - only render when active */}
+        {/* Project cards container - side by side on larger screens */}
         {isActive && hasAnimated && (
-          <ProjectCard
-            title={project.title}
-            description={project.description}
-            projectUrl={project.url}
-            buttonText={t.viewProjectButton}
-            githubUrl={project.githubUrl}
-          />
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 w-full">
+            {/* First project - 3D Travel Earth */}
+            <ProjectCard
+              title={projects[0].title}
+              description={projects[0].description}
+              projectUrl={projects[0].url}
+              buttonText={t.viewProjectButton}
+              githubUrl={projects[0].githubUrl}
+            />
+
+            {/* Second project - Marble Race */}
+            {projects[1] && (
+              <ProjectCard
+                title={projects[1].title}
+                description={projects[1].description}
+                projectUrl={projects[1].url}
+                buttonText={t.viewProjectButton}
+                githubUrl={projects[1].githubUrl}
+                illustration={<MarbleIllustration />}
+                glowColor="rgba(168, 85, 247, 0.1)"
+              />
+            )}
+          </div>
         )}
       </motion.div>
     </section>

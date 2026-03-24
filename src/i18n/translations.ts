@@ -96,6 +96,12 @@ export const translations: Record<Language, Translation> = {
         url: 'https://travel.shiyun-liu.com/',
         githubUrl: 'https://github.com/SeforaLiu/travel-globe',
       },
+      {
+        title: 'Marble Race',
+        description: 'Interactive 3D marble race game (Three.js · WebGL · JavaScript)',
+        url: 'https://marble-race-game-threejs.vercel.app/',
+        githubUrl: 'https://github.com/SeforaLiu/game_marble_race',
+      },
     ],
   },
 
@@ -147,6 +153,12 @@ export const translations: Record<Language, Translation> = {
         url: 'https://travel.shiyun-liu.com/',
         githubUrl: 'https://github.com/SeforaLiu/travel-globe',
       },
+      {
+        title: 'Marble Race',
+        description: 'Gioco di gara con biglie 3D interattivo (Three.js · WebGL · JavaScript)',
+        url: 'https://marble-race-game-threejs.vercel.app/',
+        githubUrl: 'https://github.com/SeforaLiu/game_marble_race',
+      },
     ],
   },
 
@@ -197,6 +209,12 @@ export const translations: Record<Language, Translation> = {
         description: '3D交互式地球，展示旅行记忆和目的地',
         url: 'https://travel.shiyun-liu.com/',
         githubUrl: 'https://github.com/SeforaLiu/travel-globe',
+      },
+      {
+        title: 'Marble Race',
+        description: '3D弹珠竞速游戏 (Three.js · WebGL · JavaScript)',
+        url: 'https://marble-race-game-threejs.vercel.app/',
+        githubUrl: 'https://github.com/SeforaLiu/game_marble_race',
       },
     ],
   },
