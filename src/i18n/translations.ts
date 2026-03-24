@@ -108,7 +108,7 @@ export const translations: Record<Language, Translation> = {
   it: {
     // CenterTitle
     title: 'Ciao, sono Shiyun',
-    subtitle: 'Sviluppatore Software che parla lingua umana e informatica',
+    subtitle: 'Sviluppatore Software che parla la lingua degli umani e dei computer', // 修正：更准确地对应 "human and computer language"
 
     // LeftTextPanel
     leftTextItems: [
@@ -119,7 +119,7 @@ export const translations: Record<Language, Translation> = {
     ],
 
     // SkillMap
-    skillMapTitle: 'Paesaggio Tecnologico',
+    skillMapTitle: 'Panoramica Tecnica', // 微调：Paesaggio(景观)略显生硬，Panoramica(概览)更符合技术栈语境，或者保留Paesaggio也可以，此处建议Panoramica
     skillCards: [
       'Scienze Umane Digitali',
       'Ingegneria Frontend',
@@ -145,7 +145,7 @@ export const translations: Record<Language, Translation> = {
     // ThirdScreen - Projects
     projectsTitle: 'Progetti',
     projectsSubtitle: 'I Miei Lavori Personali',
-    viewProjectButton: 'Progetti Live',
+    viewProjectButton: 'Visualizza Progetto', // 修正：原文是动作 "View"，"Progetti Live" 意为 "在线项目"，不符合按钮语境
     projectCards: [
       {
         title: '3D Travel Earth',
@@ -155,7 +155,7 @@ export const translations: Record<Language, Translation> = {
       },
       {
         title: 'Marble Race',
-        description: 'Gioco di gara con biglie 3D interattivo (Three.js · WebGL · JavaScript)',
+        description: 'Gioco interattivo di corse di biglie 3D (Three.js · WebGL · JavaScript)', // 修正：优化语序，更自然
         url: 'https://marble-race-game-threejs.vercel.app/',
         githubUrl: 'https://github.com/SeforaLiu/game_marble_race',
       },
@@ -165,7 +165,7 @@ export const translations: Record<Language, Translation> = {
   cn: {
     // CenterTitle
     title: '你好，我是刘诗韵',
-    subtitle: '精通人文与机器语言的软件开发者',
+    subtitle: '精通人类语言与机器语言的软件开发者', // 修正：Human language -> 人类语言 (人文通常指 Humanities)
 
     // LeftTextPanel
     leftTextItems: [
