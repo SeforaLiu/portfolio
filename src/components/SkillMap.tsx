@@ -1,7 +1,9 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import useIsMobile from '../hooks/useIsMobile'
+import { useLemniscateHover } from '../hooks/useLemniscateHover'
 import SkillInfoCards from './SkillInfoCards'
 import SkillMapTitle from './SkillMapTitle'
+import ExpandableSkillCards from './ExpandableSkillCards'
 
 // Configuration constants
 const DOT_COUNT = 60
@@ -67,7 +69,7 @@ export default function SkillMap() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const isMobile = useIsMobile()
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | undefined>(undefined)
   const startTimeRef = useRef<number>(0)
   const dotsRef = useRef<Dot[]>([])
   const lastPositionRef = useRef<number>(0)
@@ -77,6 +79,14 @@ export default function SkillMap() {
   const wasVisibleRef = useRef(false)
   // Track container dimensions for info cards
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 })
+
+  // Detect mouse inside infinity shape for expandable cards (PC only)
+  const isInsideShape = useLemniscateHover({
+    containerRef,
+    width: containerDimensions.width,
+    height: containerDimensions.height,
+    enabled: !isMobile && containerDimensions.width > 0,
+  })
 
   // Initialize dots array
   const initDots = useCallback(
@@ -355,6 +365,14 @@ export default function SkillMap() {
         <SkillInfoCards
           containerWidth={containerDimensions.width}
           containerHeight={containerDimensions.height}
+        />
+      )}
+      {/* Expandable skill cards - only on PC, when mouse is inside shape */}
+      {!isMobile && containerDimensions.width > 0 && containerDimensions.height > 0 && (
+        <ExpandableSkillCards
+          containerWidth={containerDimensions.width}
+          containerHeight={containerDimensions.height}
+          isInsideShape={isInsideShape}
         />
       )}
     </div>

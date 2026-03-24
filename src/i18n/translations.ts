@@ -33,6 +33,7 @@ export interface Translation {
   // SkillMap
   skillMapTitle: string
   skillCards: string[]
+  expandedSkills: string[][]
 
   // ThirdScreen - Projects
   projectsTitle: string
@@ -42,6 +43,7 @@ export interface Translation {
     title: string
     description: string
     url: string
+    githubUrl?: string
   }>
 }
 
@@ -72,6 +74,17 @@ export const translations: Record<Language, Translation> = {
       'System Architecture',
     ],
 
+    // Expandable skill cards - detailed skills for each category
+    expandedSkills: [
+      ['Text Analysis'],
+      ['React', 'Vue.js'],
+      ['Three.js', 'GLSL'],
+      ['Python', 'FastAPI'],
+      ['LLM', 'Prompting'],
+      ['PostgreSQL', 'GraphQL'],
+      ['Git', 'Vite'],
+    ],
+
     // ThirdScreen - Projects
     projectsTitle: 'Projects',
     projectsSubtitle: 'My Personal Works',
@@ -81,6 +94,7 @@ export const translations: Record<Language, Translation> = {
         title: '3D Travel Earth',
         description: 'A 3D interactive globe showcasing travel memories and destinations',
         url: 'https://travel.shiyun-liu.com/',
+        githubUrl: 'https://github.com/SeforaLiu/travel-globe',
       },
     ],
   },
@@ -111,15 +125,27 @@ export const translations: Record<Language, Translation> = {
       'Architettura di Sistema',
     ],
 
+    // Expandable skill cards - detailed skills for each category
+    expandedSkills: [
+      ['Text Analysis'],
+      ['React', 'Vue.js'],
+      ['Three.js', 'GLSL'],
+      ['Python', 'FastAPI'],
+      ['LLM', 'Prompting'],
+      ['PostgreSQL', 'GraphQL'],
+      ['Git', 'Vite'],
+    ],
+
     // ThirdScreen - Projects
     projectsTitle: 'Progetti',
     projectsSubtitle: 'I Miei Lavori Personali',
-    viewProjectButton: 'Vedi Progetto',
+    viewProjectButton: 'Progetti Live',
     projectCards: [
       {
         title: '3D Travel Earth',
         description: 'Un globo 3D interattivo che mostra ricordi di viaggio e destinazioni',
         url: 'https://travel.shiyun-liu.com/',
+        githubUrl: 'https://github.com/SeforaLiu/travel-globe',
       },
     ],
   },
@@ -150,6 +176,17 @@ export const translations: Record<Language, Translation> = {
       '系统架构',
     ],
 
+    // Expandable skill cards - detailed skills for each category
+    expandedSkills: [
+      ['Text Analysis'],
+      ['React', 'Vue.js'],
+      ['Three.js', 'GLSL'],
+      ['Python', 'FastAPI'],
+      ['LLM', 'Prompting'],
+      ['PostgreSQL', 'GraphQL'],
+      ['Git', 'Vite'],
+    ],
+
     // ThirdScreen - Projects
     projectsTitle: '项目展示',
     projectsSubtitle: '个人作品',
@@ -159,6 +196,7 @@ export const translations: Record<Language, Translation> = {
         title: '3D旅行地球',
         description: '3D交互式地球，展示旅行记忆和目的地',
         url: 'https://travel.shiyun-liu.com/',
+        githubUrl: 'https://github.com/SeforaLiu/travel-globe',
       },
     ],
   },

@@ -84,6 +84,7 @@ export default function ThirdScreen({ isActive = false }: ThirdScreenProps) {
             description={project.description}
             projectUrl={project.url}
             buttonText={t.viewProjectButton}
+            githubUrl={project.githubUrl}
           />
         )}
       </motion.div>
