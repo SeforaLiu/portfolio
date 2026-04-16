@@ -15,9 +15,10 @@ import useIsMobile from '@/hooks/useIsMobile'
 interface MobiusRibbonProps {
   mousePosition: MousePosition
   scrollPosition: ScrollPosition
+  currentScreen: number
 }
 
-function MobiusRibbon({ mousePosition, scrollPosition }: MobiusRibbonProps) {
+function MobiusRibbon({ mousePosition, scrollPosition, currentScreen }: MobiusRibbonProps) {
   const meshRef = useRef<THREE.Mesh>(null)
 
   const uniformsRef = useRef(createInitialUniforms())
@@ -98,21 +99,40 @@ function MobiusRibbon({ mousePosition, scrollPosition }: MobiusRibbonProps) {
     // 当往上滚动时，adjustedScrollProgress可能为负，需要处理
     adjustedScrollProgress = Math.max(adjustedScrollProgress, 0)
 
+    let finalTargetScale: number
+    let finalTargetX: number
+    let finalTargetY: number
+
+    if (isMobile && currentScreen >= 1) {
+      // 移动端第二屏和第三屏：隐藏ribbon
+      finalTargetScale = 0
+      finalTargetX = 0
+      finalTargetY = 0
+    } else {
+      // 正常行为：基于滚动进度插值
+      finalTargetScale = THREE.MathUtils.lerp(initialScale, targetScale, adjustedScrollProgress)
+      finalTargetX = THREE.MathUtils.lerp(initialX, targetX, adjustedScrollProgress)
+      finalTargetY = THREE.MathUtils.lerp(initialY, targetY, adjustedScrollProgress)
+    }
+
     currentScale.current = THREE.MathUtils.lerp(
       currentScale.current,
-      THREE.MathUtils.lerp(initialScale, targetScale, adjustedScrollProgress),
+      finalTargetScale,
       scrollSmoothing
     )
     currentX.current = THREE.MathUtils.lerp(
       currentX.current,
-      THREE.MathUtils.lerp(initialX, targetX, adjustedScrollProgress),
+      finalTargetX,
       scrollSmoothing
     )
     currentY.current = THREE.MathUtils.lerp(
       currentY.current,
-      THREE.MathUtils.lerp(initialY, targetY, adjustedScrollProgress),
+      finalTargetY,
       scrollSmoothing
     )
+
+    // 防止scale恰好为0
+    currentScale.current = Math.max(currentScale.current, 0.001)
 
     // --- UPDATE UNIFORMS ---
     uniforms.uTime.value = timeRef.current

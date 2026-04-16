@@ -37,7 +37,7 @@ function App() {
               <EffectComposer>
                 <Bloom luminanceThreshold={0.3} intensity={0.5} radius={0.5} />
               </EffectComposer>}
-            <MobiusRibbon mousePosition={mousePosition} scrollPosition={scrollPosition} />
+            <MobiusRibbon mousePosition={mousePosition} scrollPosition={scrollPosition} currentScreen={currentScreen} />
           </Canvas>
         </div>
 

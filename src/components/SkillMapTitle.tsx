@@ -1,24 +1,37 @@
 import { motion } from 'framer-motion'
 import { useLanguage } from '../i18n/LanguageContext'
 
+const MOBILE_SHAPE_CONFIG = {
+  sizeRatio: 0.7,
+  widthRatio: 0.6,
+  padding: 40,
+}
+
+const PC_HEIGHT_RATIO = 0.35
+const TITLE_OFFSET_PC = 140
+const TITLE_OFFSET_MOBILE = 110
+
 interface SkillMapTitleProps {
   containerHeight: number
+  isMobile?: boolean
 }
 
 /**
  * SkillMapTitle - Title displayed above the infinity shape
  * Features a "Breathing Neon" effect to match the cyberpunk theme of SkillMap
- *
- * Design Choice:
- * - Multi-layered text-shadow creates a realistic neon glow diffusion.
- * - Pulsing animation simulates the instability of gas in a neon tube.
  */
-export default function SkillMapTitle({ containerHeight }: SkillMapTitleProps) {
+export default function SkillMapTitle({ containerHeight, isMobile = false }: SkillMapTitleProps) {
   const { t } = useLanguage()
 
-  // Position calculation (unchanged logic, kept for consistency)
-  const b = containerHeight * 0.35 // PC_HEIGHT_RATIO
-  const titleY = (containerHeight / 2) - (b / 2) - 140 // Increased offset slightly for better spacing
+  let titleY: number
+  if (isMobile) {
+    const padding = MOBILE_SHAPE_CONFIG.padding
+    const a = (containerHeight - padding * 2) / 2 * MOBILE_SHAPE_CONFIG.sizeRatio
+    titleY = (containerHeight / 2) - a - TITLE_OFFSET_MOBILE
+  } else {
+    const b = containerHeight * PC_HEIGHT_RATIO
+    titleY = (containerHeight / 2) - (b / 2) - TITLE_OFFSET_PC
+  }
 
   // Neon Color Palette
   const neonColor = '#00ffff' // Cyan
@@ -40,7 +53,7 @@ export default function SkillMapTitle({ containerHeight }: SkillMapTitleProps) {
       }}
     >
       <motion.h2
-        className="text-3xl md:text-4xl font-extralight tracking-[0.3em] uppercase"
+        className={`font-extralight tracking-[0.3em] uppercase ${isMobile ? 'text-xl' : 'text-3xl md:text-4xl'}`}
         style={{
           color: '#fff',
           // Initial static glow (base layer)

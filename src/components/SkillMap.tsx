@@ -4,6 +4,7 @@ import { useLemniscateHover } from '../hooks/useLemniscateHover'
 import SkillInfoCards from './SkillInfoCards'
 import SkillMapTitle from './SkillMapTitle'
 import ExpandableSkillCards from './ExpandableSkillCards'
+import MobileSkillLabels from './MobileSkillLabels'
 
 // Configuration constants
 const DOT_COUNT = 60
@@ -22,6 +23,13 @@ const GLOW_COLOR = '#00ffff'
 // On PC, this controls the "flatness" of the horizontal ∞
 // Higher value = flatter shape
 const PC_HEIGHT_RATIO = 0.35 // Y scale is 50% of container height
+
+// 移动端「站立8字」形状参数（方便调试）
+const MOBILE_SHAPE_CONFIG = {
+  sizeRatio: 0.7,     // 整体大小比例（1.0 = 填满可用空间）
+  widthRatio: 0.6,    // 宽度比例（1.0 = 正常，越小越窄）
+  padding: 40,        // 距离边缘的内边距
+}
 
 interface Dot {
   x: number
@@ -94,13 +102,13 @@ export default function SkillMap() {
       // Store dimensions for snake path calculation
       dimensionsRef.current = { width, height }
 
-      const padding = 60
+      const padding = isMobile ? MOBILE_SHAPE_CONFIG.padding : 60
       const a = isMobile
-        ? (height - padding * 2) / 2
+        ? (height - padding * 2) / 2 * MOBILE_SHAPE_CONFIG.sizeRatio
         : (width - padding * 2) / 2
       // On PC, reduce b to make the ∞ shape flatter
       const b = isMobile
-        ? (width - padding * 2)
+        ? (width - padding * 2) * MOBILE_SHAPE_CONFIG.sizeRatio * MOBILE_SHAPE_CONFIG.widthRatio
         : (height - padding * 2) * PC_HEIGHT_RATIO
 
       const dots: Dot[] = []
@@ -220,13 +228,13 @@ export default function SkillMap() {
       lastPositionRef.current = position
 
       // Calculate snake coordinates using same formula as dots
-      const padding = 60
+      const padding = isMobile ? MOBILE_SHAPE_CONFIG.padding : 60
       const a = isMobile
-        ? (height - padding * 2) / 2
+        ? (height - padding * 2) / 2 * MOBILE_SHAPE_CONFIG.sizeRatio
         : (width - padding * 2) / 2
       // On PC, reduce b to make the ∞ shape flatter (same as initDots)
       const b = isMobile
-        ? (width - padding * 2)
+        ? (width - padding * 2) * MOBILE_SHAPE_CONFIG.sizeRatio * MOBILE_SHAPE_CONFIG.widthRatio
         : (height - padding * 2) * PC_HEIGHT_RATIO
 
       const snakePoint = getInfinityPoint(position, a, b, isMobile)
@@ -356,13 +364,20 @@ export default function SkillMap() {
         className="w-full h-full"
         style={{ display: 'block' }}
       />
-      {/* Title above the infinity shape - only on PC */}
-      {!isMobile && containerDimensions.height > 0 && (
-        <SkillMapTitle containerHeight={containerDimensions.height} />
+      {/* Title above the infinity shape */}
+      {containerDimensions.height > 0 && (
+        <SkillMapTitle containerHeight={containerDimensions.height} isMobile={isMobile} />
       )}
       {/* Info cards - only on PC */}
       {!isMobile && containerDimensions.width > 0 && containerDimensions.height > 0 && (
         <SkillInfoCards
+          containerWidth={containerDimensions.width}
+          containerHeight={containerDimensions.height}
+        />
+      )}
+      {/* Mobile skill labels - only on mobile */}
+      {isMobile && containerDimensions.width > 0 && containerDimensions.height > 0 && (
+        <MobileSkillLabels
           containerWidth={containerDimensions.width}
           containerHeight={containerDimensions.height}
         />
