@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import useIsMobile from '@/hooks/useIsMobile'
 
 /**
  * RightTextPanel - Code snippets overlay
@@ -10,7 +11,8 @@ import { motion } from 'framer-motion'
  * - Responsive: bottom position on mobile, right side on desktop
  */
 function RightTextPanel() {
-  const codeBlocks = [
+  const isMobile = useIsMobile()
+  const allCodeBlocks = [
     {
       content: (
         <>
@@ -24,8 +26,10 @@ function RightTextPanel() {
     {
       content: (
         <>
-          <span style={{ color: '#818cf8' }}>useEffect</span>(() =&gt;{' '}
-          <span style={{ color: '#34d399' }}>evolve</span>(), []);
+          &lt;
+          <span style={{ color: '#fb7185' }}>Language</span>{' '}
+          <span style={{ color: '#fcd34d' }}>human</span>={<span style={{ color: '#34d399' }}>true</span>}{' '}
+          <span style={{ color: '#fcd34d' }}>machine</span>={<span style={{ color: '#34d399' }}>true</span>} /&gt;
         </>
       ),
       delay: 0.9,
@@ -33,15 +37,15 @@ function RightTextPanel() {
     {
       content: (
         <>
-          &lt;
-          <span style={{ color: '#fb7185' }}>Language</span>{' '}
-          <span style={{ color: '#fcd34d' }}>human</span>={<span style={{ color: '#34d399' }}>true</span>}{' '}
-          <span style={{ color: '#fcd34d' }}>machine</span>={<span style={{ color: '#34d399' }}>true</span>} /&gt;
+          <span style={{ color: '#818cf8' }}>useEffect</span>(() =&gt;{' '}
+          <span style={{ color: '#34d399' }}>evolve</span>(), []);
         </>
       ),
       delay: 1.2,
     },
   ] as const
+
+  const codeBlocks = isMobile ? allCodeBlocks.slice(0, 2) : allCodeBlocks
 
   return (
     <motion.div

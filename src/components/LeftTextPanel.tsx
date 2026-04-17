@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useLanguage } from '@/i18n'
+import useIsMobile from '@/hooks/useIsMobile'
 
 /**
  * LeftTextPanel - Poetic text overlay with i18n support
@@ -13,7 +14,8 @@ import { useLanguage } from '@/i18n'
  */
 function LeftTextPanel() {
   const { t } = useLanguage()
-  const textItems = t.leftTextItems
+  const isMobile = useIsMobile()
+  const textItems = isMobile ? t.leftTextItems.slice(0, 2) : t.leftTextItems
 
   return (
     <motion.div
