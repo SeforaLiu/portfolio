@@ -20,6 +20,7 @@ interface MobiusRibbonProps {
 
 function MobiusRibbon({ mousePosition, scrollPosition, currentScreen }: MobiusRibbonProps) {
   const meshRef = useRef<THREE.Mesh>(null)
+  const materialRef = useRef<THREE.ShaderMaterial>(null)
 
   const uniformsRef = useRef(createInitialUniforms())
 
@@ -39,12 +40,12 @@ function MobiusRibbon({ mousePosition, scrollPosition, currentScreen }: MobiusRi
 
   // 监听窗口大小变化，更新 Shader 中的分辨率 (虽然目前 Fragment Shader 没重度依赖，但这是最佳实践)
   useEffect(() => {
-    uniformsRef.current.uResolution.value.set(size.width, size.height)
+    if (materialRef.current) {
+      materialRef.current.uniforms.uResolution.value.set(size.width, size.height)
+    }
   }, [size])
 
   useFrame((_, delta) => {
-    const uniforms = uniformsRef.current
-
     // 1. 时间步长限制
     const clampedDelta = Math.min(delta, 0.1)
     timeRef.current += clampedDelta
@@ -135,12 +136,15 @@ function MobiusRibbon({ mousePosition, scrollPosition, currentScreen }: MobiusRi
     currentScale.current = Math.max(currentScale.current, 0.001)
 
     // --- UPDATE UNIFORMS ---
-    uniforms.uTime.value = timeRef.current
-    uniforms.uTwist.value = currentTwist.current
-    uniforms.uHoverScale.value = currentHoverIntensity.current * 0.2
-    uniforms.uFlowIntensity.value = currentHoverIntensity.current * 0.5
-    uniforms.uRailOffset.value = railOffsetRef.current
-    uniforms.uIsMobile.value = isMobile ? 1.0 : 0.0
+    const material = materialRef.current
+    if (material) {
+      material.uniforms.uTime.value = timeRef.current
+      material.uniforms.uTwist.value = currentTwist.current
+      material.uniforms.uHoverScale.value = currentHoverIntensity.current * 0.2
+      material.uniforms.uFlowIntensity.value = currentHoverIntensity.current * 0.5
+      material.uniforms.uRailOffset.value = railOffsetRef.current
+      material.uniforms.uIsMobile.value = isMobile ? 1.0 : 0.0
+    }
 
     // 更新 mesh 位置和缩放
     if (meshRef.current) {
@@ -163,6 +167,7 @@ function MobiusRibbon({ mousePosition, scrollPosition, currentScreen }: MobiusRi
         ]}
       />
       <shaderMaterial
+        ref={materialRef}
         uniforms={uniformsRef.current}
         vertexShader={mobiusShaders.vertex}
         fragmentShader={mobiusShaders.fragment}
