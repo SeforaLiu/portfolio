@@ -91,8 +91,8 @@ export const translations: Record<Language, Translation> = {
     viewProjectButton: 'View Project',
     projectCards: [
       {
-        title: '3D Travel Earth',
-        description: 'A 3D interactive globe showcasing travel memories and destinations',
+        title: '3D Travel Globe',
+        description: 'Full-stack WebGL ecosystem for Narrative Mapping and Sentiment Analysis',
         url: 'https://travel.shiyun-liu.com/',
         githubUrl: 'https://github.com/SeforaLiu/travel-globe',
       },
@@ -108,7 +108,7 @@ export const translations: Record<Language, Translation> = {
   it: {
     // CenterTitle
     title: 'Ciao, sono Shiyun',
-    subtitle: 'Sviluppatore Software che parla la lingua degli umani e dei computer', // 修正：更准确地对应 "human and computer language"
+    subtitle: 'Software Developer tra linguaggio umano e macchina',
 
     // LeftTextPanel
     leftTextItems: [
@@ -119,7 +119,7 @@ export const translations: Record<Language, Translation> = {
     ],
 
     // SkillMap
-    skillMapTitle: 'Panoramica Tecnica', // 微调：Paesaggio(景观)略显生硬，Panoramica(概览)更符合技术栈语境，或者保留Paesaggio也可以，此处建议Panoramica
+    skillMapTitle: 'Panoramica Tecnica',
     skillCards: [
       'Scienze Umane Digitali',
       'Ingegneria Frontend',
@@ -144,18 +144,18 @@ export const translations: Record<Language, Translation> = {
 
     // ThirdScreen - Projects
     projectsTitle: 'Progetti',
-    projectsSubtitle: 'I Miei Lavori Personali',
-    viewProjectButton: 'Visualizza Progetto', // 修正：原文是动作 "View"，"Progetti Live" 意为 "在线项目"，不符合按钮语境
+    projectsSubtitle: 'I Miei Lavori',
+    viewProjectButton: 'Visualizza Progetto',
     projectCards: [
       {
-        title: '3D Travel Earth',
-        description: 'Un globo 3D interattivo che mostra ricordi di viaggio e destinazioni',
+        title: '3D Travel Globe',
+        description: 'Ecosistema WebGL full-stack per Narrative Mapping e Sentiment Analysis',
         url: 'https://travel.shiyun-liu.com/',
         githubUrl: 'https://github.com/SeforaLiu/travel-globe',
       },
       {
         title: 'Marble Race',
-        description: 'Gioco interattivo di corse di biglie 3D (Three.js · WebGL · JavaScript)', // 修正：优化语序，更自然
+        description: 'Gioco interattivo 3D di corse con biglie (Three.js · WebGL · JavaScript)',
         url: 'https://marble-race-game-threejs.vercel.app/',
         githubUrl: 'https://github.com/SeforaLiu/game_marble_race',
       },
@@ -164,8 +164,8 @@ export const translations: Record<Language, Translation> = {
 
   cn: {
     // CenterTitle
-    title: '你好，我是刘诗韵',
-    subtitle: '精通人类语言与机器语言的软件开发者', // 修正：Human language -> 人类语言 (人文通常指 Humanities)
+    title: '你好，我是诗韵',
+    subtitle: '精通机器语言与人类语言的软件开发者',
 
     // LeftTextPanel
     leftTextItems: [
@@ -205,7 +205,7 @@ export const translations: Record<Language, Translation> = {
     viewProjectButton: '查看项目',
     projectCards: [
       {
-        title: '3D旅行地球',
+        title: '3D Travel Globe',
         description: '3D交互式地球，展示旅行记忆和目的地',
         url: 'https://travel.shiyun-liu.com/',
         githubUrl: 'https://github.com/SeforaLiu/travel-globe',
